@@ -1,207 +1,74 @@
-// server.js
+const express = require("express");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-
-
-const express = require("express");     // Helps us create a web server
-const cors = require("cors");           // Lets our frontend talk to our backend
-const bcrypt = require("bcrypt");       // Used to safely hash passwords
-const jwt = require("jsonwebtoken");    // Used to create login tokens
-
-// Import our simple "fake database"
-const { createUser, findUserByEmail } = require("./usersDb");
-
-
-// -----------------------------
-// 2. SETUP EXPRESS APP
-// -----------------------------
+const { createUser, findUserByEmail } = require("./usersDB");
 
 const app = express();
 const PORT = 3000;
 
-// This key is used to create tokens.
-// (Later, you should store this in .env file)
 const JWT_SECRET = "my_secret_key";
 
+// Middlewares
+app.use(cors());
+app.use(express.json());
 
-// -----------------------------
-// 3. USE MIDDLEWARE
-// -----------------------------
-
-app.use(cors());         // Allow requests from frontend
-app.use(express.json()); // Allow JSON data in POST requests
-
-
-// -----------------------------
-// 4. FUNCTION TO CREATE TOKENS
-// -----------------------------
-
-// When a user logs in, we create a token for them.
-// That token proves "who they are".
+// Create a token
 function createToken(user) {
   return jwt.sign(
-    { id: user.id, email: user.email }, // Payload (data we store in token)
-    JWT_SECRET,                         // Secret key to protect the token
-    { expiresIn: "1h" }                 // Token expires in 1 hour
+    { id: user.id, email: user.email },
+    JWT_SECRET,
+    { expiresIn: "1h" }
   );
 }
 
-
-// -----------------------------
-// 5. REGISTER ROUTE (CREATE USER)
-// -----------------------------
-
+// Register route
 app.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body; // Get email & password from frontend
+    const { email, password } = req.body;
 
-    // Check if email or password is missing
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter both email and password.",
-      });
-    }
+    if (!email || !password)
+      return res.status(400).json({ message: "Email and password required" });
 
-    // Check password length
-    if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be at least 6 characters long.",
-      });
-    }
+    if (password.length < 6)
+      return res.status(400).json({ message: "Password too short" });
 
-    // Hash the password so we don't store it as plain text
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashed = await bcrypt.hash(password, 10);
 
-    // Save user in our fake database
-    const newUser = createUser({ email, passwordHash: hashedPassword });
+    const newUser = createUser({ email, passwordHash: hashed });
 
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully!",
-      user: { id: newUser.id, email: newUser.email },
-    });
-
+    res.status(201).json({ success: true, user: newUser });
   } catch (err) {
     if (err.message === "User already exists") {
-      return res.status(409).json({
-        success: false,
-        message: "This email is already registered.",
-      });
+      return res.status(409).json({ message: "Email already registered" });
     }
-
-    res.status(500).json({
-      success: false,
-      message: "Something went wrong.",
-    });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-
-// -----------------------------
-// 6. LOGIN ROUTE
-// -----------------------------
-
+// Login route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Make sure both fields exist
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter email and password.",
-      });
-    }
-
-    // Find user by email
     const user = findUserByEmail(email);
+    if (!user)
+      return res.status(401).json({ message: "Invalid email or password" });
 
-    // If no user found
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Incorrect email or password.",
-      });
-    }
+    const match = await bcrypt.compare(password, user.passwordHash);
+    if (!match)
+      return res.status(401).json({ message: "Invalid email or password" });
 
-    // Compare entered password with hashed password
-    const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
-
-    if (!passwordCorrect) {
-      return res.status(401).json({
-        success: false,
-        message: "Incorrect email or password.",
-      });
-    }
-
-    // If password matches → create token
     const token = createToken(user);
 
-    res.json({
-      success: true,
-      message: "Login successful!",
-      token,
-      user: { id: user.id, email: user.email },
-    });
-
+    res.json({ success: true, token, user });
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Something went wrong.",
-    });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-
-// -----------------------------
-// 7. SIMPLE TOKEN CHECK MIDDLEWARE
-// -----------------------------
-
-function checkToken(req, res, next) {
-  // Token is sent in header: Authorization: Bearer token
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Split "Bearer token"
-
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "No token found. Please log in.",
-    });
-  }
-
-  // Verify token
-  jwt.verify(token, JWT_SECRET, (err, userData) => {
-    if (err) {
-      return res.status(403).json({
-        success: false,
-        message: "Token is invalid or expired.",
-      });
-    }
-
-    req.user = userData; // Save token data to request
-    next(); // Continue
-  });
-}
-
-
-// -----------------------------
-// 8. AN EXAMPLE PROTECTED ROUTE
-// -----------------------------
-
-app.get("/profile", checkToken, (req, res) => {
-  res.json({
-    success: true,
-    message: "Welcome to your profile!",
-    user: req.user,
-  });
-});
-
-
-// -----------------------------
-// 9. START THE SERVER
-// -----------------------------
-
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
