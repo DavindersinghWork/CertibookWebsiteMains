@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CertiBook Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1c1f4a, #26316f);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        .container {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-btn {
+            background-color: #00c2ff;
+            color: #000;
+        }
+        .login-btn:hover {
+            background-color: #00a6d6;
+        }
+        .register-btn {
+            background-color: #ffffff;
+            color: #000;
+        }
+        .register-btn:hover {
+            background-color: #dcdcdc;
+        }
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            text-align: center;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>CertiBook Login</h2>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter Email" required />
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter Password" required />
+        </div>
+
+        <button class="btn login-btn" onclick="login()">Login</button>
+        <button class="btn register-btn" onclick="register()">Register</button>
+
+        <p class="footer-text">Blockchain-Powered Certificate Verification System</p>
+    </div>
+
+    <script>
+        // ==== BACKEND LOGIN HOOK ====
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                const response = await fetch("", {  //Login hook inside the ""
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Login successful!");
+                    console.log(result);
+                    // window.location.href = "dashboard.html";
+                } else {
+                    alert(result.message || "Login failed.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error connecting to server.");
+            }
+        }
+
+        // ==== BACKEND REGISTRATION HOOK ====
+        async function register() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                const response = await fetch("", {  //Register hook inside the ""
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Registration successful!");
+                    console.log(result);
+                } else {
+                    alert(result.message || "Registration failed.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error connecting to server.");
+            }
+        }
+    </script>
+</body>
+</html>
