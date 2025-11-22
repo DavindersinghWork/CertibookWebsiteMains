@@ -1,73 +1,47 @@
-// Import the driver
-const mysql = require('mysql2');
+const mysql = require("mysql2/promise");
 
-// Create a connection
-const connection = mysql.createConnection({
-  host: 'localhost',      // database server
-  port: 3306
-,             // custom port
-  user: 'root',           // your DB username
-  password: 'Chandelatul$',   // your DB password
-  database: 'certibook'      // your DB name
+// Create connection pool
+const db = mysql.createPool({
+    host: "localhost",
+    user: "root",
+    password: "Chandelatul$",   // your password
+    database: "certibook",
+    port: 3307                   // change ONLY if needed
 });
 
-// Open the connection
-connection.connect(err => {
-  if (err) {
-    console.error('Error connecting: ' + err.stack);
-    return;
-  }
-  console.log('Connected as id ' + connection.threadId);
-});
+// REGISTER USER
+async function createUser({ email, passwordHash }) {
+    const sql = "INSERT INTO users (email, passwordHash) VALUES (?, ?)";
 
-// Function to add a new user
-function addUser(email, passwordHash) {
-  const sql = 'INSERT INTO users (email, passwordHash) VALUES (?, ?)';
-  connection.query(sql, [email, passwordHash], (err, results) => {
-    if (err) {
-      console.error('Error inserting user:', err.message);
-      return;
+    try {
+        const [result] = await db.execute(sql, [email, passwordHash]);
+        return { id: result.insertId, email, passwordHash };
+    } catch (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+            throw new Error("User already exists");
+        }
+        throw err;
     }
-    //console.log("New user added with ID:", ${results.insertId});
-  });
-}
-// Function to check if a user exists
-function checkUser(email, passwordHash) {
-  const sql = 'SELECT * FROM users WHERE email = ? AND passwordHash = ?';
-  connection.query(sql, [email, passwordHash], (err, results) => {
-    if (err) {
-      console.error('Error checking user:', err.message);
-      return;
-    }
-    if (results.length > 0) {
-      console.log('User exists:', results[0]);
-    } else {
-      console.log('No user found with given credentials.');
-    }
-  });
 }
 
+// FIND USER BY EMAIL
+async function findUserByEmail(email) {
+    const sql = "SELECT * FROM users WHERE email = ?";
 
-
-// Create a new user
-function createUser({ email, passwordHash }) {
-  const exists = users.find((u) => u.email === email);
-  if (exists) throw new Error("User already exists");
-
-  const newUser = {
-    id: users.length + 1,
-    email,
-    passwordHash,
-  };
-
-  users.push(newUser);
-  return newUser;
+    const [rows] = await db.execute(sql, [email]);
+    return rows.length > 0 ? rows[0] : null;
 }
 
-// Find user by email
-function findUserByEmail(email) {
-  return users.find((u) => u.email === email);
+// SAVE STUDENT INFO
+async function saveStudentInfo(studentNumber, studentEmail) {
+    const sql = "INSERT INTO students (studentNumber, studentEmail) VALUES (?, ?)";
+    await db.execute(sql, [studentNumber, studentEmail]);
 }
 
-module.exports = { createUser, findUserByEmail };
+module.exports = {
+    createUser,
+    findUserByEmail,
+    saveStudentInfo
+};
+
 
