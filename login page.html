@@ -4,120 +4,183 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CertiBook Login</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1c1f4a, #26316f);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-        }
-        .container {
-            width: 380px;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            font-size: 0.9rem;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-        }
+ <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5ecac;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        /* password + eye icon */
-        .password-group {
-            position: relative;
-        }
-        
-        
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 16px;
-            opacity: 0.7;
-            user-select: none;
-        }
-        .toggle-password:hover {
-            opacity: 1;
-        }
+    /* Background Shapes (same as registration page) */
+    .shape1 {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 40%;
+      height: 40%;
+      background: #34d9d0;
+      border-bottom-right-radius: 200px;
+      z-index: -1;
+    }
 
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            font-size: 1rem;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .login-btn {
-            background-color: #00c2ff;
-            color: #000;
-        }
-        .login-btn:hover {
-            background-color: #00a6d6;
-        }
-        .register-btn {
-            background-color: #ffffff;
-            color: #000;
-        }
-        .register-btn:hover {
-            background-color: #dcdcdc;
-        }
-        .footer-text {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            text-align: center;
-            opacity: 0.8;
-        }
-    </style>
+    .shape2 {
+      position: absolute;
+      top: 65cqb;
+      right: 0;
+      width: 40%;
+      height: 45%;
+      background: #278a70;
+      border-top-left-radius: 200px;
+      z-index: -1;
+    }
+
+    /* Card Container */
+    .container {
+      background: rgba(102, 168, 137, 0.85);
+      width: 380px;
+      margin-top: 120px;
+      padding: 40px 35px;
+      border-radius: 25px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.23);
+      text-align: center;
+    }
+
+    /* Top Icon */
+    .header-icon img {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    /* Title */
+    h1 {
+      font-size: 28px;
+      margin: 0;
+      color: black;
+    }
+
+    /* Input Group */
+    .input-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 80%;
+      padding: 14px 45px 14px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+      outline: none;
+      font-size: 17px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.15);
+      transition: 0.25s;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .input-group input:focus {
+      border-color: #00ffe6;
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.05);
+      box-shadow: 0px 0px 12px rgba(0, 255, 230, 0.5);
+    }
+
+    /* Icons on right */
+    .input-group img {
+      width: 22px;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.9;
+    }
+
+    /* Login Button */
+    .btn {
+      margin-top: 10px;
+      width: 100%;
+      background: #7fffee;
+      border: none;
+      border-radius: 35px;
+      padding: 16px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #0b5744;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0px 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .btn:hover {
+      background-color: #55f3de;
+    }
+
+    /* Divider Text */
+    .footer-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .register-link {
+    color: #004b39;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: underline;
+    transition: transform 0.25s ease, font-size 0.25s ease;
+    display: inline-block;
+    }
+
+    .register-link:hover {
+    transform: scale(1.03);
+    font-size: 16px;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>CertiBook Login</h2>
+  <div class="shape1"></div>
+  <div class="shape2"></div>
 
-        <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Enter Email" required />
-        </div>
+  <div class="container">
 
-        <div class="input-group password-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter Password" required />
-            <span class="toggle-password" onclick="togglePassword('password', this)">👁</span>
-        </div>
-
-        <button class="btn login-btn" onclick="login()">Login</button>
-        <!-- Opens separate register page in same folder -->
-        <button class="btn register-btn" onclick="register()">Register</button>
-
-        <p class="footer-text">Blockchain-Powered Certificate Verification System</p>
+    <div class="header-icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" />
     </div>
+
+    <h1>CertiBook Login</h1>
+    <br><br>
+
+    <div class="input-group">
+      <input type="email" id="email" placeholder="Enter email" />
+      <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png">
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Enter password" />
+      <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png">
+    </div>
+
+    <button class="btn" onclick="login()">Login</button>
+
+    <p class="footer-text">
+      Don't have an account?  
+      <span class="register-link" onclick="goRegister()">Register</span>
+    </p>
+
+  </div>
 
     <script>
         const API_BASE = "http://localhost:3000";
