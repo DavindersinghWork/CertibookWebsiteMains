@@ -64,6 +64,23 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error." });
   }
 });
+// login by role
+app.post("/select-role", (req, res) => {
+  const { role } = req.body;
+
+  if (!role) {
+    return res.status(400).json({ message: "Role not selected." });
+  }
+
+  // Redirect based on role
+  let redirectPage = "";
+
+  if (role === "student") redirectPage = "certibook_student_portal.html";
+  if (role === "employer") redirectPage = "certibook_employer_portal.html";
+  if (role === "academic") redirectPage = "welcome.html";
+
+  return res.json({ redirect: redirectPage });
+});
 
 // SAVE STUDENT INFO
 app.post("/student-info", async (req, res) => {
@@ -97,3 +114,4 @@ app.get("/api/profile", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
