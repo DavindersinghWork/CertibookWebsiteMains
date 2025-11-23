@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Profile</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #f4f1d6;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Background shapes */
+    .shape-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60%;
+        height: 40%;
+        background: #41e4d3;
+        border-bottom-left-radius: 100%;
+        z-index: -1;
+    }
+
+    .shape-left {
+        position: absolute;
+        top: 40%;
+        left: -20%;
+        width: 80%;
+        height: 45%;
+        background: #41e4d3;
+        transform: rotate(45deg);
+        z-index: -1;
+    }
+
+    .container {
+        padding: 30px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #2fae9e;
+        margin-top: 60px;
+    }
+
+    .profile-img {
+        display: block;
+        margin: 15px auto 30px auto;
+        width: 130px;
+    }
+
+    /* Labels */
+    .label {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 30px;
+    }
+
+    /* Value text */
+    .value {
+        font-size: 20px;
+        color: #666;
+        margin: 6px 0 10px 0;
+    }
+
+    .hr {
+        width: 100%;
+        height: 2px;
+        background: black;
+        margin: 8px 0 10px 0;
+    }
+</style>
+</head>
+<body>
+
+<div class="shape-right"></div>
+<div class="shape-left"></div>
+
+<div class="container">
+
+    <div class="title">Student Profile</div>
+
+    <!-- Insert generated image here -->
+    <img class="profile-img" src="StudentIcon.png" alt="Student Icon">
+
+    <div class="label">First name</div>
+    <div class="value"><input type="text" id="firstName" name="firstName" placeholder="Enter first name" /></div>
+    <div class="hr"></div>
+
+    <div class="label">Last name</div>
+    <div class="value"><input type="text" id="lastName" name="lastName" placeholder="Enter last name" /></div>
+    <div class="hr"></div>
+
+    <div class="label">Date of Birth</div>
+    <div class="value"><input type="date" id="dob" name="dob" /></div>
+    <div class="hr"></div>
+
+    <div class="label">Email Address</div>
+    <div class="value"><input type="email" id="email" name="email" placeholder="Enter email" /></div>
+    <div class="hr"></div>
+
+    <div class="label">Contact Number</div>
+    <div class="value"><input type="tel" id="contact" name="contact" placeholder="Enter phone number" /></div>
+    <div class="hr"></div>
+
+    <div class="label">Current Institution</div>
+    <div class="value"><input type="text" id="institution" name="institution" placeholder="Enter institution name" /></div>
+    <div class="hr"></div>
+
+</div>
+
+</body>
+</html>
