@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+</head>
+
+<body>
+
+<div class="shape1"></div>
+<div class="shape2"></div>
+
+<div class="container">
+
+  <div class="login-icon">
+    <img src="Screenshot 2025-11-22 235934.png">
+  </div>
+
+  <h1>Login</h1>
+
+  <p class="welcome-text">
+    Welcome to certibook,<br>
+    Select your role to<br>
+    continue
+  </p>
+
+  <button class="role-button">
+    Student 
+    <img src="Screenshot 2025-11-23 000043.png">
+  </button>
+
+  <button class="role-button">
+    Employer
+    <img src="Screenshot 2025-11-23 000100.png">
+  </button>
+
+  <button class="role-button">
+    Academics
+    <img src="Screenshot 2025-11-23 000119.png">
+  </button>
+
+</div>
+
+</body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5ecac;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Background Shapes */
+  .shape1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 40%;
+    background: #34d9d0;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    z-index: -1;
+  }
+
+  .shape2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 45%;
+    background: #278a70;
+    border-bottom-left-radius: 200px;
+    z-index: -1;
+  }
+
+  /* Container */
+  .container {
+    background: rgba(102, 168, 137, 0.85);
+    width: 390px;
+    margin-top: 120px;
+    padding: 35px 30px;
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.23);
+    text-align: center;
+  }
+
+  /* Login Icon */
+  .login-icon img {
+    width: 60px;
+    margin-bottom: 8px;
+  }
+
+  /* Title */
+  h1 {
+    font-size: 30px;
+    margin: 0;
+    color: black;
+    border-bottom: 4px solid #34d9d0;
+    width: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 4px;
+  }
+
+  .welcome-text {
+    margin-top: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #003b2d;
+    line-height: 1.4;
+  }
+
+  /* Role Buttons */
+  .role-button {
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    font-size: 22px;
+    text-align: left;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .role-button img {
+    width: 35px;
+    opacity: 0.95;
+  }
+
+  .role-button:hover {
+    opacity: 0.8;
+  }
+</style>
+
